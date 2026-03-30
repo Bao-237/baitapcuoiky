@@ -1,66 +1,141 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
-// using GoogleMobileAds;
-// using GoogleMobileAds.Api;
-// TODO: Install Google Mobile Ads SDK from Unity Package Manager
+using GoogleMobileAds.Api;
 
 public class ads : MonoBehaviour
 {
-    // Start is called before the first frame update
-    public void Start()
+    public static ads Instance { get; private set; }
+
+    [Header("Reward Config")]
+    [SerializeField, Min(1)] private int rewardCoins = 50;
+    [SerializeField] private bool useTestAds = false;
+
+    [Header("Android Rewarded Ad Unit ID")]
+    [SerializeField] private string androidRewardedAdUnitId = "ca-app-pub-1868095958078656/2408998539";
+
+    private RewardedAd rewardedAd;
+
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+    private static void AutoCreate()
     {
-        // Initialize the Google Mobile Ads SDK.
-        // MobileAds.Initialize((InitializationStatus initStatus) =>
-        // {
-        //     // This callback is called once the MobileAds SDK is initialized.
-        // });
-        // CreateBannerView();
-        Debug.LogWarning("Google Mobile Ads SDK not installed. Please import the package.");
+        if (FindObjectOfType<ads>() != null)
+        {
+            return;
+        }
+
+        GameObject adsObject = new GameObject("AdsManager");
+        adsObject.AddComponent<ads>();
     }
 
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
 
-    // These ad units are configured to always serve test ads.
-#if UNITY_ANDROID
-  private string _adUnitId = "ca-app-pub-1795130036144880/1289435510";
-//#elif UNITY_IPHONE
-//  private string _adUnitId = "ca-app-pub-3940256099942544/2934735716";
-#else
-    private string _adUnitId = "unused";
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
+    }
+
+    private void Start()
+    {
+#if !UNITY_ANDROID
+        Debug.Log("Rewarded ads are configured for Android only.");
+        return;
 #endif
 
-    // BannerView _bannerView;
-    object _bannerView;
-
-    /// <summary>
-    /// Creates a 320x50 banner view at top of the screen.
-    /// </summary>
-    public void CreateBannerView()
-    {
-        // Debug.Log("Creating full-width banner view");
-
-        // // Create a full-width banner that adjusts to screen width
-        // _bannerView = new BannerView(_adUnitId, AdSize.Leaderboard, AdPosition.Bottom);
-        // LoadAd();
+        MobileAds.Initialize(_ =>
+        {
+            LoadRewardedAd();
+        });
     }
 
-    /// <summary>
-    /// Creates the banner view and loads a banner ad.
-    /// </summary>
-    public void LoadAd()
+    private string RewardedAdUnitId
     {
-        // // create an instance of a banner view first.
-        // if (_bannerView == null)
-        // {
-        //     CreateBannerView();
-        // }
-
-        // // create our request used to load the ad.
-        // var adRequest = new AdRequest();
-
-        // // send the request to load the ad.
-        // Debug.Log("Loading banner ad.");
-        // _bannerView.LoadAd(adRequest);
+        get
+        {
+#if UNITY_ANDROID
+            return useTestAds ? "ca-app-pub-3940256099942544/5224354917" : androidRewardedAdUnitId;
+#else
+            return "unused";
+#endif
+        }
     }
 
+    public void LoadRewardedAd()
+    {
+        if (rewardedAd != null)
+        {
+            rewardedAd.Destroy();
+            rewardedAd = null;
+        }
+
+        AdRequest adRequest = new AdRequest();
+
+        RewardedAd.Load(RewardedAdUnitId, adRequest, (RewardedAd ad, LoadAdError error) =>
+        {
+            if (error != null || ad == null)
+            {
+                Debug.LogWarning("Rewarded ad failed to load: " + error);
+                return;
+            }
+
+            rewardedAd = ad;
+            RegisterRewardedAdEvents(rewardedAd);
+            Debug.Log("Rewarded ad loaded.");
+        });
+    }
+
+    public void ShowRewardedAdForCoins()
+    {
+        if (rewardedAd == null)
+        {
+            Debug.LogWarning("Rewarded ad is not loaded yet. Reloading...");
+            LoadRewardedAd();
+            return;
+        }
+
+        if (!rewardedAd.CanShowAd())
+        {
+            Debug.LogWarning("Rewarded ad cannot be shown now. Reloading...");
+            LoadRewardedAd();
+            return;
+        }
+
+        rewardedAd.Show((Reward reward) =>
+        {
+            if (CoinManager.Instance != null)
+            {
+                CoinManager.Instance.AddCoins(rewardCoins);
+            }
+
+            Debug.Log("Player earned reward: +" + rewardCoins + " coins.");
+        });
+    }
+
+    public void SetRewardCoins(int amount)
+    {
+        rewardCoins = Mathf.Max(1, amount);
+    }
+
+    public int GetRewardCoins()
+    {
+        return rewardCoins;
+    }
+
+    private void RegisterRewardedAdEvents(RewardedAd ad)
+    {
+        ad.OnAdFullScreenContentClosed += () =>
+        {
+            LoadRewardedAd();
+        };
+
+        ad.OnAdFullScreenContentFailed += (AdError error) =>
+        {
+            Debug.LogWarning("Rewarded ad full screen failed: " + error);
+            LoadRewardedAd();
+        };
+    }
 }

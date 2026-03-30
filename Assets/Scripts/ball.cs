@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;  // Ensure this is included to use UI Text
+using TMPro;
 using UnityEngine.SceneManagement;
 
 
@@ -10,12 +10,12 @@ public class ball : MonoBehaviour
 {
     public float force;
     public GameObject splash;  // Corrected to GameObject
-    public Text score_txt;
+    public TMP_Text score_txt;
     private int score = 0;  // Declare and initialize score variable
     public GameObject GameOverMenu;
     bool addforce;
 
-    public Text highscore_txt;
+    public TMP_Text highscore_txt;
     private int highscore;  // Declare and initialize score variable
 
 
