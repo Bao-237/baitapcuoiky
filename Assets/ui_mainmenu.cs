@@ -7,30 +7,55 @@ using TMPro;
 
 public class ui_mainmenu : MonoBehaviour
 {
+    private const string CoinsKey = "coins";
+
     [Header("Coin UI")]
     public TMP_Text coinText;
+    public TMP_Text achievementCoinText;
+
+    [Header("Menu Panels")]
+    public GameObject startMenuPanel;
+    public GameObject achievementPanel;
+
+    [Header("Level Progress")]
+    public int firstGameplayBuildIndex = 1;
+
+    private bool coinEventsBound;
 
     void Start()
     {
+        ShowStartMenu();
+        TryBindCoinManager();
         RefreshCoinsUI();
+    }
 
-        if (CoinManager.Instance != null)
+    void Update()
+    {
+        if (!coinEventsBound)
         {
-            CoinManager.Instance.CoinsChanged += OnCoinsChanged;
+            TryBindCoinManager();
         }
     }
 
     void OnDestroy()
     {
-        if (CoinManager.Instance != null)
+        if (coinEventsBound && CoinManager.Instance != null)
         {
             CoinManager.Instance.CoinsChanged -= OnCoinsChanged;
         }
+
+        coinEventsBound = false;
     }
 
     public void LoadLevel(int n)
     {
         SceneManager.LoadScene(n);
+    }
+
+    public void PlayContinue()
+    {
+        int targetLevel = LevelProgressManager.GetNextLevelToPlay(firstGameplayBuildIndex);
+        SceneManager.LoadScene(targetLevel);
     }
 
     public void Quit()
@@ -49,6 +74,37 @@ public class ui_mainmenu : MonoBehaviour
         ads.Instance.ShowRewardedAdForCoins();
     }
 
+    public void OpenAchievement()
+    {
+        if (startMenuPanel != null)
+        {
+            startMenuPanel.SetActive(false);
+        }
+
+        if (achievementPanel != null)
+        {
+            achievementPanel.SetActive(true);
+        }
+    }
+
+    public void BackFromAchievement()
+    {
+        ShowStartMenu();
+    }
+
+    private void ShowStartMenu()
+    {
+        if (startMenuPanel != null)
+        {
+            startMenuPanel.SetActive(true);
+        }
+
+        if (achievementPanel != null)
+        {
+            achievementPanel.SetActive(false);
+        }
+    }
+
     private void OnCoinsChanged(int coins)
     {
         UpdateCoinText(coins);
@@ -62,7 +118,19 @@ public class ui_mainmenu : MonoBehaviour
             return;
         }
 
-        UpdateCoinText(0);
+        UpdateCoinText(PlayerPrefs.GetInt(CoinsKey, 0));
+    }
+
+    private void TryBindCoinManager()
+    {
+        if (coinEventsBound || CoinManager.Instance == null)
+        {
+            return;
+        }
+
+        CoinManager.Instance.CoinsChanged += OnCoinsChanged;
+        coinEventsBound = true;
+        UpdateCoinText(CoinManager.Instance.Coins);
     }
 
     private void UpdateCoinText(int coins)
@@ -70,6 +138,11 @@ public class ui_mainmenu : MonoBehaviour
         if (coinText != null)
         {
             coinText.text = coins + " xu";
+        }
+
+        if (achievementCoinText != null)
+        {
+            achievementCoinText.text = coins + " xu";
         }
     }
 }

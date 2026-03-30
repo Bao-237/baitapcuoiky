@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 
@@ -10,23 +10,32 @@ public class ball : MonoBehaviour
 {
     public float force;
     public GameObject splash;  // Corrected to GameObject
-    public TMP_Text score_txt;
+    public Text score_txt;
     private int score = 0;  // Declare and initialize score variable
     public GameObject GameOverMenu;
     bool addforce;
 
-    public TMP_Text highscore_txt;
+    public Text highscore_txt;
     private int highscore;  // Declare and initialize score variable
 
 
     public GameObject LevelCompleted_Menu;
 
+    [Header("Level Progress")]
+    public int levelNumber = -1;
+
+    private bool levelCompletionSaved;
+
     void Start()
     {
         addforce = true;
+        levelCompletionSaved = false;
         highscore = PlayerPrefs.GetInt("highscore", 0);  // Default to 0 if not found
-        
-        highscore_txt.text = "Highest Score: " + PlayerPrefs.GetInt("highscore");
+
+        if (highscore_txt != null)
+        {
+            highscore_txt.text = "Highest Score: " + PlayerPrefs.GetInt("highscore");
+        }
         Debug.Log("Start - Highscore loaded: " + highscore);  // Debugging line
 
 
@@ -50,10 +59,18 @@ public class ball : MonoBehaviour
                 PlayerPrefs.SetInt("highscore", score);
                 //highscore_txt.text = "Highest Score: " + PlayerPrefs.GetInt("highscore") + "";
 
+                if (highscore_txt != null)
+                {
+                    highscore_txt.text = "Highest Score: " + score;
+                }
+
                 Debug.Log("OnTriggerEnter - New highscore! Updated highscore: " + highscore);  // Debugging line
 
             }
-            score_txt.text = "Score: " + score + " ";
+            if (score_txt != null)
+            {
+                score_txt.text = "Score: " + score + " ";
+            }
             //score_txt.text = score.ToString();  // Update the text component
 
         }
@@ -121,6 +138,12 @@ public class ball : MonoBehaviour
 
         else if (col.gameObject.tag == "completed")
         {
+            if (!levelCompletionSaved)
+            {
+                LevelProgressManager.MarkLevelCompleted(GetCurrentLevelNumber());
+                levelCompletionSaved = true;
+            }
+
             LevelCompleted_Menu.SetActive(true);
         }
 
@@ -135,7 +158,9 @@ public class ball : MonoBehaviour
 
     public void NextLevel_btn()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        int nextBuildIndex = SceneManager.GetActiveScene().buildIndex + 1;
+        LevelProgressManager.SetCurrentLevelToPlay(nextBuildIndex);
+        SceneManager.LoadScene(nextBuildIndex);
     }
 
 
@@ -156,6 +181,16 @@ public class ball : MonoBehaviour
     void fix()
     {
         addforce = true;
+    }
+
+    private int GetCurrentLevelNumber()
+    {
+        if (levelNumber > 0)
+        {
+            return levelNumber;
+        }
+
+        return Mathf.Max(1, SceneManager.GetActiveScene().buildIndex);
     }
 
 }
