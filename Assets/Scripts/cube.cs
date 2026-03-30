@@ -1,9 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Firebase;
-using Firebase.Database;
-using Firebase.Extensions;
+// using Firebase;
+// using Firebase.Database;
+// using Firebase.Extensions;
+// TODO: Install Firebase SDK from Unity Package Manager
 
 public class Cube : MonoBehaviour
 {
@@ -11,19 +12,21 @@ public class Cube : MonoBehaviour
     void Start()
     {
         // Log an event in Firebase Analytics (correct method)
-        Firebase.Analytics.FirebaseAnalytics.LogEvent("Level_1_DONE");
+        // Firebase.Analytics.FirebaseAnalytics.LogEvent("Level_1_DONE");
 
         // Correct Firebase database reference (fixed spelling mistake)
-        DatabaseReference reference = FirebaseDatabase.DefaultInstance.RootReference;
+        // DatabaseReference reference = FirebaseDatabase.DefaultInstance.RootReference;
+        Debug.LogWarning("Firebase SDK not installed. Please import the package.");
+        object reference = null;
 
         // Create the User object
-        User user = new User("Rizwan", "bscs23140@itu.edu.pk");
+        // User user = new User("Rizwan", "bscs23140@itu.edu.pk");
 
         // Convert the User object to JSON
-        string json = JsonUtility.ToJson(user);
+        // string json = JsonUtility.ToJson(user);
 
         // Save the JSON to Firebase (correct method for async saving)
-        reference.Child("users").Child("5").SetRawJsonValueAsync(json);
+        // reference.Child("users").Child("5").SetRawJsonValueAsync(json);
     }
 
     // Update is called once per frame

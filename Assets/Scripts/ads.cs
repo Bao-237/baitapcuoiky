@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using GoogleMobileAds;
-using GoogleMobileAds.Api;
+// using GoogleMobileAds;
+// using GoogleMobileAds.Api;
+// TODO: Install Google Mobile Ads SDK from Unity Package Manager
 
 public class ads : MonoBehaviour
 {
@@ -10,12 +11,12 @@ public class ads : MonoBehaviour
     public void Start()
     {
         // Initialize the Google Mobile Ads SDK.
-        MobileAds.Initialize((InitializationStatus initStatus) =>
-        {
-            // This callback is called once the MobileAds SDK is initialized.
-        });
-        CreateBannerView();
-
+        // MobileAds.Initialize((InitializationStatus initStatus) =>
+        // {
+        //     // This callback is called once the MobileAds SDK is initialized.
+        // });
+        // CreateBannerView();
+        Debug.LogWarning("Google Mobile Ads SDK not installed. Please import the package.");
     }
 
 
@@ -28,18 +29,19 @@ public class ads : MonoBehaviour
     private string _adUnitId = "unused";
 #endif
 
-    BannerView _bannerView;
+    // BannerView _bannerView;
+    object _bannerView;
 
     /// <summary>
     /// Creates a 320x50 banner view at top of the screen.
     /// </summary>
     public void CreateBannerView()
     {
-        Debug.Log("Creating full-width banner view");
+        // Debug.Log("Creating full-width banner view");
 
-        // Create a full-width banner that adjusts to screen width
-        _bannerView = new BannerView(_adUnitId, AdSize.Leaderboard, AdPosition.Bottom);
-        LoadAd();
+        // // Create a full-width banner that adjusts to screen width
+        // _bannerView = new BannerView(_adUnitId, AdSize.Leaderboard, AdPosition.Bottom);
+        // LoadAd();
     }
 
     /// <summary>
@@ -47,18 +49,18 @@ public class ads : MonoBehaviour
     /// </summary>
     public void LoadAd()
     {
-        // create an instance of a banner view first.
-        if (_bannerView == null)
-        {
-            CreateBannerView();
-        }
+        // // create an instance of a banner view first.
+        // if (_bannerView == null)
+        // {
+        //     CreateBannerView();
+        // }
 
-        // create our request used to load the ad.
-        var adRequest = new AdRequest();
+        // // create our request used to load the ad.
+        // var adRequest = new AdRequest();
 
-        // send the request to load the ad.
-        Debug.Log("Loading banner ad.");
-        _bannerView.LoadAd(adRequest);
+        // // send the request to load the ad.
+        // Debug.Log("Loading banner ad.");
+        // _bannerView.LoadAd(adRequest);
     }
 
 }

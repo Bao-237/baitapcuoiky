@@ -1,7 +1,8 @@
 using System.Collections;
 using UnityEngine;
-using GoogleMobileAds;
-using GoogleMobileAds.Api;
+// using GoogleMobileAds;
+// using GoogleMobileAds.Api;
+// TODO: Install Google Mobile Ads SDK from Unity Package Manager
 
 public class script : MonoBehaviour
 {
@@ -10,11 +11,12 @@ public class script : MonoBehaviour
         public void Start()
         {
             // Initialize the Google Mobile Ads SDK.
-            MobileAds.Initialize((InitializationStatus initStatus) =>
-            {
-                // This callback is called once the MobileAds SDK is initialized.
-            });
-        LoadInterstitialAd();
+            // MobileAds.Initialize((InitializationStatus initStatus) =>
+            // {
+            //     // This callback is called once the MobileAds SDK is initialized.
+            // });
+        // LoadInterstitialAd();
+        Debug.LogWarning("Google Mobile Ads SDK not installed. Please import the package.");
         }
 
 
@@ -27,7 +29,8 @@ public class script : MonoBehaviour
     private string _adUnitId = "unused";
 #endif
 
-    private InterstitialAd _interstitialAd;
+    // private InterstitialAd _interstitialAd;
+    private object _interstitialAd;
 
     /// <summary>
     /// Loads the interstitial ad.
@@ -41,44 +44,44 @@ public class script : MonoBehaviour
         //    _interstitialAd = null;
         //}
 
-        Debug.Log("Loading the interstitial ad.");
+        // Debug.Log("Loading the interstitial ad.");
 
-        // create our request used to load the ad.
-        var adRequest = new AdRequest();
+        // // create our request used to load the ad.
+        // var adRequest = new AdRequest();
 
-        // send the request to load the ad.
-        InterstitialAd.Load(_adUnitId, adRequest,
-            (InterstitialAd ad, LoadAdError error) =>
-            {
-                // if error is not null, the load request failed.
-                if (error != null || ad == null)
-                {
-                    Debug.LogError("interstitial ad failed to load an ad " +
-                                   "with error : " + error);
-                    return;
-                }
+        // // send the request to load the ad.
+        // InterstitialAd.Load(_adUnitId, adRequest,
+        //     (InterstitialAd ad, LoadAdError error) =>
+        //     {
+        //         // if error is not null, the load request failed.
+        //         if (error != null || ad == null)
+        //         {
+        //             Debug.LogError("interstitial ad failed to load an ad " +
+        //                            "with error : " + error);
+        //             return;
+        //         }
 
-                Debug.Log("Interstitial ad loaded with response : "
-                          + ad.GetResponseInfo());
+        //         Debug.Log("Interstitial ad loaded with response : "
+        //                   + ad.GetResponseInfo());
 
-                _interstitialAd = ad;
-            });
-        ShowInterstitialAd();
+        //         _interstitialAd = ad;
+        //     });
+        // ShowInterstitialAd();
     }
     /// <summary>
     /// Shows the interstitial ad.
     /// </summary>
     public void ShowInterstitialAd()
     {
-        if (_interstitialAd != null && _interstitialAd.CanShowAd())
-        {
-            Debug.Log("Showing interstitial ad.");
-            _interstitialAd.Show();
-        }
-        else
-        {
-            Debug.LogError("Interstitial ad is not ready yet.");
-        }
+        // if (_interstitialAd != null && _interstitialAd.CanShowAd())
+        // {
+        //     Debug.Log("Showing interstitial ad.");
+        //     _interstitialAd.Show();
+        // }
+        // else
+        // {
+        //     Debug.LogError("Interstitial ad is not ready yet.");
+        // }
     }
 
 }
