@@ -12,10 +12,12 @@ public class ui_mainmenu : MonoBehaviour
     [Header("Coin UI")]
     public TMP_Text coinText;
     public TMP_Text achievementCoinText;
+    public TMP_Text startMenuTotalScoreText;
 
     [Header("Menu Panels")]
     public GameObject startMenuPanel;
     public GameObject achievementPanel;
+    public GameObject leaderboardPanel;
 
     [Header("Level Progress")]
     public int firstGameplayBuildIndex = 1;
@@ -27,6 +29,7 @@ public class ui_mainmenu : MonoBehaviour
         ShowStartMenu();
         TryBindCoinManager();
         RefreshCoinsUI();
+        RefreshTotalScoreUI();
     }
 
     void Update()
@@ -81,15 +84,52 @@ public class ui_mainmenu : MonoBehaviour
             startMenuPanel.SetActive(false);
         }
 
+        if (leaderboardPanel != null)
+        {
+            leaderboardPanel.SetActive(false);
+        }
+
         if (achievementPanel != null)
         {
             achievementPanel.SetActive(true);
         }
     }
 
+    public void OpenLeaderboard()
+    {
+        if (startMenuPanel != null)
+        {
+            startMenuPanel.SetActive(false);
+        }
+
+        if (achievementPanel != null)
+        {
+            achievementPanel.SetActive(false);
+        }
+
+        if (leaderboardPanel != null)
+        {
+            leaderboardPanel.SetActive(true);
+
+            LeaderboardUI leaderboardUI = leaderboardPanel.GetComponent<LeaderboardUI>();
+            if (leaderboardUI != null)
+            {
+                leaderboardUI.RefreshLeaderboardFromProgress();
+            }
+        }
+
+        RefreshTotalScoreUI();
+    }
+
     public void BackFromAchievement()
     {
         ShowStartMenu();
+    }
+
+    public void BackFromLeaderboard()
+    {
+        ShowStartMenu();
+        RefreshTotalScoreUI();
     }
 
     private void ShowStartMenu()
@@ -102,6 +142,11 @@ public class ui_mainmenu : MonoBehaviour
         if (achievementPanel != null)
         {
             achievementPanel.SetActive(false);
+        }
+
+        if (leaderboardPanel != null)
+        {
+            leaderboardPanel.SetActive(false);
         }
     }
 
@@ -144,5 +189,16 @@ public class ui_mainmenu : MonoBehaviour
         {
             achievementCoinText.text = coins + " xu";
         }
+    }
+
+    private void RefreshTotalScoreUI()
+    {
+        if (startMenuTotalScoreText == null)
+        {
+            return;
+        }
+
+        int totalScore = LevelScoreManager.GetTotalBestScore();
+        startMenuTotalScoreText.text = totalScore.ToString();
     }
 }

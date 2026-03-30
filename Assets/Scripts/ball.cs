@@ -140,7 +140,9 @@ public class ball : MonoBehaviour
         {
             if (!levelCompletionSaved)
             {
-                LevelProgressManager.MarkLevelCompleted(GetCurrentLevelNumber());
+                int completedLevel = GetCurrentLevelNumber();
+                LevelProgressManager.MarkLevelCompleted(completedLevel);
+                LevelScoreManager.RegisterLevelScore(completedLevel, score);
                 levelCompletionSaved = true;
             }
 
