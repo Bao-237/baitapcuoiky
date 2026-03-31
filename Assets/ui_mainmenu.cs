@@ -12,6 +12,7 @@ public class ui_mainmenu : MonoBehaviour
     [Header("Coin UI")]
     public TMP_Text coinText;
     public TMP_Text achievementCoinText;
+    public TMP_Text shopCoinText;
     public TMP_Text startMenuTotalScoreText;
 
     [Header("Menu Panels")]
@@ -232,6 +233,11 @@ public class ui_mainmenu : MonoBehaviour
         if (achievementCoinText != null)
         {
             achievementCoinText.text = coins + " xu";
+        }
+
+        if (shopCoinText != null)
+        {
+            shopCoinText.text = coins + " xu";
         }
     }
 

@@ -31,7 +31,6 @@ public class BallShopUI : MonoBehaviour
 
     [Header("Thông báo mua thành công")]
     [SerializeField] private GameObject popupPurchased;
-    [SerializeField] private TMP_Text   popupPurchasedText;
 
     // ──────────────────────────────────────────────
     // Private state
@@ -290,9 +289,6 @@ public class BallShopUI : MonoBehaviour
         {
             popupPurchased.SetActive(true);
             popupPurchasedTimer = popupDuration;
-
-            if (popupPurchasedText != null)
-                popupPurchasedText.text = "Đã mua: " + ball.ballName + "!";
         }
     }
 

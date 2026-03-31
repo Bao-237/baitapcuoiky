@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b614711229322fa44b01dae975787e2a, type: 3}
+  m_Name: ballreddd
+  m_EditorClassIdentifier: Assembly-CSharp::BallData
+  ballId: Ball red
+  ballName: Ball Red
+  description: "Ball \u0111\u1EB9p"
+  previewSprite: {fileID: -1378197260, guid: 12a8731deca82f04c93fc54128659063, type: 3}
+  ballMaterial: {fileID: 2100000, guid: cd125e53d85071c4292dc7eda136bd38, type: 2}
+  price: 100
+  isDefault: 0
+  sizeMultiplier: 1
+  bounceMultiplier: 1
