@@ -9,7 +9,7 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: New Material
   m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
-  m_Parent: {fileID: 2100000, guid: 061eab7bfeae63e4798af1497bbe2e8e, type: 2}
+  m_Parent: {fileID: 2100000, guid: 76ab296ad67bdd44b90e147260501749, type: 2}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
   m_InvalidKeywords: []
@@ -28,5 +28,6 @@ Material:
     - _Glossiness: 0.68
     - _Metallic: 0.6
     m_Colors:
-    - _Color: {r: 1, g: 0.30891666, b: 0.015723169, a: 1}
+    - _Color: {r: 0.9811321, g: 0.9811321, b: 0.9811321, a: 1}
   m_BuildTextureStacks: []
+  m_AllowLocking: 1

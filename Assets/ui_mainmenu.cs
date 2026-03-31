@@ -18,6 +18,7 @@ public class ui_mainmenu : MonoBehaviour
     public GameObject startMenuPanel;
     public GameObject achievementPanel;
     public GameObject leaderboardPanel;
+    public GameObject shopPanel;
 
     [Header("Level Progress")]
     public int firstGameplayBuildIndex = 1;
@@ -89,6 +90,11 @@ public class ui_mainmenu : MonoBehaviour
             leaderboardPanel.SetActive(false);
         }
 
+        if (shopPanel != null)
+        {
+            shopPanel.SetActive(false);
+        }
+
         if (achievementPanel != null)
         {
             achievementPanel.SetActive(true);
@@ -107,6 +113,11 @@ public class ui_mainmenu : MonoBehaviour
             achievementPanel.SetActive(false);
         }
 
+        if (shopPanel != null)
+        {
+            shopPanel.SetActive(false);
+        }
+
         if (leaderboardPanel != null)
         {
             leaderboardPanel.SetActive(true);
@@ -121,6 +132,29 @@ public class ui_mainmenu : MonoBehaviour
         RefreshTotalScoreUI();
     }
 
+    public void OpenShop()
+    {
+        if (startMenuPanel != null)
+        {
+            startMenuPanel.SetActive(false);
+        }
+
+        if (achievementPanel != null)
+        {
+            achievementPanel.SetActive(false);
+        }
+
+        if (leaderboardPanel != null)
+        {
+            leaderboardPanel.SetActive(false);
+        }
+
+        if (shopPanel != null)
+        {
+            shopPanel.SetActive(true);
+        }
+    }
+
     public void BackFromAchievement()
     {
         ShowStartMenu();
@@ -130,6 +164,11 @@ public class ui_mainmenu : MonoBehaviour
     {
         ShowStartMenu();
         RefreshTotalScoreUI();
+    }
+
+    public void BackFromShop()
+    {
+        ShowStartMenu();
     }
 
     private void ShowStartMenu()
@@ -147,6 +186,11 @@ public class ui_mainmenu : MonoBehaviour
         if (leaderboardPanel != null)
         {
             leaderboardPanel.SetActive(false);
+        }
+
+        if (shopPanel != null)
+        {
+            shopPanel.SetActive(false);
         }
     }
 

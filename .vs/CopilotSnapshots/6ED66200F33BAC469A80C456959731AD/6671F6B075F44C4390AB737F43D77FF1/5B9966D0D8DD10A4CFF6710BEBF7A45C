@@ -1,0 +1,244 @@
+﻿using System;
+using System.Collections.Generic;
+using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
+
+public class Shop : MonoBehaviour
+{
+    [Serializable]
+    public class BallItem
+    {
+        public int id;
+        public string ballName;
+        public int price;
+        public Material ballMaterial;
+        public string description;
+    }
+
+    [Header("Shop Configuration")]
+    [SerializeField] private BallItem[] availableBalls;
+
+    [Header("UI References")]
+    [SerializeField] private Transform shopItemContainer;
+    [SerializeField] private GameObject shopItemPrefab;
+    [SerializeField] private TMP_Text coinsDisplayText;
+
+    private List<ShopItemUI> shopItems = new List<ShopItemUI>();
+    private Dictionary<int, bool> purchasedBalls = new Dictionary<int, bool>();
+    private const string PurchasedBallKey = "purchased_ball_";
+
+    private void OnEnable()
+    {
+        RefreshShop();
+        if (CoinManager.Instance != null)
+        {
+            CoinManager.Instance.CoinsChanged += OnCoinsChanged;
+        }
+    }
+
+    private void OnDisable()
+    {
+        if (CoinManager.Instance != null)
+        {
+            CoinManager.Instance.CoinsChanged -= OnCoinsChanged;
+        }
+    }
+
+    private void RefreshShop()
+    {
+        LoadPurchasedBalls();
+        CreateShopItems();
+        UpdateCoinsDisplay();
+    }
+
+    private void LoadPurchasedBalls()
+    {
+        purchasedBalls.Clear();
+
+        if (availableBalls == null)
+        {
+            return;
+        }
+
+        foreach (BallItem ball in availableBalls)
+        {
+            if (ball == null)
+            {
+                continue;
+            }
+
+            string key = PurchasedBallKey + ball.id;
+            bool isPurchased = PlayerPrefs.GetInt(key, 0) == 1;
+            purchasedBalls[ball.id] = isPurchased;
+        }
+    }
+
+    private void CreateShopItems()
+    {
+        // Clear existing items
+        foreach (ShopItemUI item in shopItems)
+        {
+            if (item != null)
+            {
+                Destroy(item.gameObject);
+            }
+        }
+        shopItems.Clear();
+
+        if (shopItemContainer == null || shopItemPrefab == null || availableBalls == null)
+        {
+            return;
+        }
+
+        foreach (BallItem ball in availableBalls)
+        {
+            if (ball == null)
+            {
+                continue;
+            }
+
+            GameObject itemObj = Instantiate(shopItemPrefab, shopItemContainer);
+            ShopItemUI shopItem = itemObj.GetComponent<ShopItemUI>();
+
+            if (shopItem != null)
+            {
+                bool isPurchased = purchasedBalls.ContainsKey(ball.id) && purchasedBalls[ball.id];
+                shopItem.Initialize(ball, isPurchased, OnBuyButtonClicked);
+                shopItems.Add(shopItem);
+            }
+        }
+    }
+
+    private void OnBuyButtonClicked(BallItem ball)
+    {
+        if (ball == null || CoinManager.Instance == null)
+        {
+            return;
+        }
+
+        bool isPurchased = purchasedBalls.ContainsKey(ball.id) && purchasedBalls[ball.id];
+
+        if (isPurchased)
+        {
+            SelectBall(ball.id);
+            return;
+        }
+
+        if (CoinManager.Instance.SpendCoins(ball.price))
+        {
+            purchasedBalls[ball.id] = true;
+            SavePurchasedBall(ball.id);
+            UpdateShopItemUI(ball.id);
+            SelectBall(ball.id);
+        }
+        else
+        {
+            Debug.LogWarning("Not enough coins to buy this ball!");
+        }
+    }
+
+    private void SavePurchasedBall(int ballId)
+    {
+        string key = PurchasedBallKey + ballId;
+        PlayerPrefs.SetInt(key, 1);
+        PlayerPrefs.Save();
+    }
+
+    private void SelectBall(int ballId)
+    {
+        PlayerPrefs.SetInt("selected_ball", ballId);
+        PlayerPrefs.Save();
+        Debug.Log("Ball " + ballId + " selected!");
+    }
+
+    private void UpdateShopItemUI(int ballId)
+    {
+        foreach (ShopItemUI item in shopItems)
+        {
+            if (item != null && item.BallId == ballId)
+            {
+                item.UpdateUI(true);
+            }
+        }
+    }
+
+    private void OnCoinsChanged(int coins)
+    {
+        UpdateCoinsDisplay();
+    }
+
+    private void UpdateCoinsDisplay()
+    {
+        if (coinsDisplayText != null && CoinManager.Instance != null)
+        {
+            coinsDisplayText.text = "Coins: " + CoinManager.Instance.Coins;
+        }
+    }
+}
+
+public class ShopItemUI : MonoBehaviour
+{
+    private Shop.BallItem ballItem;
+    private bool isPurchased;
+    private Action<Shop.BallItem> onBuyClicked;
+
+    [SerializeField] private TMP_Text ballNameText;
+    [SerializeField] private TMP_Text priceText;
+    [SerializeField] private TMP_Text descriptionText;
+    [SerializeField] private Button buyButton;
+    [SerializeField] private Image ballPreviewImage;
+
+    public int BallId => ballItem != null ? ballItem.id : -1;
+
+    public void Initialize(Shop.BallItem ball, bool purchased, Action<Shop.BallItem> callback)
+    {
+        ballItem = ball;
+        isPurchased = purchased;
+        onBuyClicked = callback;
+
+        UpdateUI(purchased);
+
+        if (buyButton != null)
+        {
+            buyButton.onClick.AddListener(OnBuyButtonClick);
+        }
+    }
+
+    public void UpdateUI(bool purchased)
+    {
+        isPurchased = purchased;
+
+        if (ballNameText != null && ballItem != null)
+        {
+            ballNameText.text = ballItem.ballName;
+        }
+
+        if (descriptionText != null && ballItem != null)
+        {
+            descriptionText.text = ballItem.description;
+        }
+
+        if (priceText != null && buyButton != null)
+        {
+            if (purchased)
+            {
+                priceText.text = "OWNED";
+                buyButton.GetComponentInChildren<TMP_Text>().text = "Select";
+            }
+            else
+            {
+                priceText.text = ballItem.price + " coins";
+                buyButton.GetComponentInChildren<TMP_Text>().text = "Buy";
+            }
+        }
+    }
+
+    private void OnBuyButtonClick()
+    {
+        if (onBuyClicked != null && ballItem != null)
+        {
+            onBuyClicked(ballItem);
+        }
+    }
+}

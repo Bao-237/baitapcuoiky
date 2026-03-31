@@ -1,0 +1,50 @@
+﻿using UnityEngine;
+using TMPro;
+using UnityEngine.SceneManagement;
+
+public class GameManager : MonoBehaviour
+{
+    private void Start()
+    {
+        UpdateCanvasUIByTag();
+    }
+
+    private void UpdateCanvasUIByTag()
+    {
+        // Update score display
+        UpdateUIElementByTag("score", LevelScoreManager.GetTotalBestScore().ToString());
+
+        // Update game-over display
+        int currentLevelScore = GetCurrentLevelScore();
+        UpdateUIElementByTag("game-over", currentLevelScore.ToString());
+    }
+
+    private void UpdateUIElementByTag(string tag, string text)
+    {
+        GameObject[] objectsWithTag = GameObject.FindGameObjectsWithTag(tag);
+        
+        foreach (GameObject obj in objectsWithTag)
+        {
+            // Try to find TMP_Text component
+            TMP_Text tmpText = obj.GetComponent<TMP_Text>();
+            if (tmpText != null)
+            {
+                tmpText.text = text;
+                continue;
+            }
+
+            // Try to find Text component (UI.Text)
+            UnityEngine.UI.Text uiText = obj.GetComponent<UnityEngine.UI.Text>();
+            if (uiText != null)
+            {
+                uiText.text = text;
+            }
+        }
+    }
+
+    private int GetCurrentLevelScore()
+    {
+        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+        return LevelScoreManager.GetLevelBestScore(currentSceneIndex);
+    }
+}
