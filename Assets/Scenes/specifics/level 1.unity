@@ -1317,8 +1317,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: NEXT
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 53f6b047802f32149bd64774a3ec9139, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 53f6b047802f32149bd64774a3ec9139, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -3599,8 +3599,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: RETRY
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 53f6b047802f32149bd64774a3ec9139, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 53f6b047802f32149bd64774a3ec9139, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -3735,8 +3735,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: MENU
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 53f6b047802f32149bd64774a3ec9139, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 53f6b047802f32149bd64774a3ec9139, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -4585,8 +4585,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: LEVEL COMPLETED
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 53f6b047802f32149bd64774a3ec9139, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 53f6b047802f32149bd64774a3ec9139, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -7464,7 +7464,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2096774092
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7849,6 +7849,18 @@ PrefabInstance:
     - target: {fileID: 168357642939806289, guid: aa4ff69045ebba04892e18f7ec797417, type: 3}
       propertyPath: m_Name
       value: ball (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3650531703942905126, guid: aa4ff69045ebba04892e18f7ec797417, type: 3}
+      propertyPath: baseScale.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3650531703942905126, guid: aa4ff69045ebba04892e18f7ec797417, type: 3}
+      propertyPath: baseScale.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3650531703942905126, guid: aa4ff69045ebba04892e18f7ec797417, type: 3}
+      propertyPath: baseScale.z
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 6114725135086876737, guid: aa4ff69045ebba04892e18f7ec797417, type: 3}
       propertyPath: m_LocalPosition.x

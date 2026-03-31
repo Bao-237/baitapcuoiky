@@ -15,7 +15,7 @@ public class ads : MonoBehaviour
 
     private RewardedAd rewardedAd;
 
-    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
     private static void AutoCreate()
     {
         if (FindObjectOfType<ads>() != null)

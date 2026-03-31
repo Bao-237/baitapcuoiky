@@ -63,7 +63,7 @@ PrefabInstance:
     - target: {fileID: 3597976297749269721, guid: 956b6525d2f0cc54e8db257c075e1bb0, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: 6a15b1f15432b6f4b9a8066e1e6ca4df, type: 2}
+      objectReference: {fileID: 2100000, guid: 3648fe57227048c4e8fae345bee43554, type: 2}
     - target: {fileID: 3692693895548825394, guid: 956b6525d2f0cc54e8db257c075e1bb0, type: 3}
       propertyPath: m_Constraints
       value: 10
@@ -85,6 +85,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4983177697541086299, guid: 956b6525d2f0cc54e8db257c075e1bb0, type: 3}
       insertIndex: -1
       addedObject: {fileID: 9010112872863143838}
+    - targetCorrespondingSourceObject: {fileID: 4983177697541086299, guid: 956b6525d2f0cc54e8db257c075e1bb0, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3650531703942905126}
   m_SourcePrefab: {fileID: 100100000, guid: 956b6525d2f0cc54e8db257c075e1bb0, type: 3}
 --- !u!1 &168357642939806289 stripped
 GameObject:
@@ -317,3 +320,16 @@ TrailRenderer:
   m_Autodestruct: 0
   m_Emitting: 1
   m_ApplyActiveColorSpace: 1
+--- !u!114 &3650531703942905126
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 168357642939806289}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f929068978619f418338cd6531fae97, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BallAppearance
+  baseScale: {x: 0.5, y: 0.5, z: 0.5}
