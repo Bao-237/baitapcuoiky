@@ -7850,18 +7850,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: ball (1)
       objectReference: {fileID: 0}
-    - target: {fileID: 3650531703942905126, guid: aa4ff69045ebba04892e18f7ec797417, type: 3}
-      propertyPath: baseScale.x
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 3650531703942905126, guid: aa4ff69045ebba04892e18f7ec797417, type: 3}
-      propertyPath: baseScale.y
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 3650531703942905126, guid: aa4ff69045ebba04892e18f7ec797417, type: 3}
-      propertyPath: baseScale.z
-      value: 0.5
-      objectReference: {fileID: 0}
     - target: {fileID: 6114725135086876737, guid: aa4ff69045ebba04892e18f7ec797417, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.25
