@@ -40,6 +40,7 @@ public class BallShopUI : MonoBehaviour
     private System.Action<int> coinChangedListener;
     private float             popupAffordTimer;
     private float             popupPurchasedTimer;
+    private bool              coinManagerSubscribed = false;
 
     // ──────────────────────────────────────────────
     // Lifecycle
@@ -52,24 +53,31 @@ public class BallShopUI : MonoBehaviour
 
     private void OnEnable()
     {
-        if (CoinManager.Instance != null)
-        {
-            CoinManager.Instance.CoinsChanged += coinChangedListener;
-            RefreshCoinDisplay(CoinManager.Instance.Coins);
-        }
+        coinManagerSubscribed = false;
+
+        SubscribeToCoinManager();
 
         if (BallShopManager.Instance != null)
         {
             BallShopManager.Instance.OnBallPurchased += HandleBallPurchased;
-        }
-
-        // Nếu BallShopManager đã sẵn sàng thì build luôn
-        if (BallShopManager.Instance != null)
-        {
             BuildItemList();
         }
 
         HidePopups();
+    }
+
+    private void SubscribeToCoinManager()
+    {
+        if (coinManagerSubscribed) return;
+        if (CoinManager.Instance == null) return;
+
+        CoinManager.Instance.CoinsChanged -= coinChangedListener;
+        CoinManager.Instance.CoinsChanged += coinChangedListener;
+        RefreshCoinDisplay(CoinManager.Instance.Coins);
+        coinManagerSubscribed = true;
+
+        if (coinText == null)
+            Debug.LogWarning("[BallShopUI] coinText chưa được gán trong Inspector! Kéo TMP_Text vào trường Coin Text.");
     }
 
     /// <summary>
@@ -86,12 +94,8 @@ public class BallShopUI : MonoBehaviour
             BallShopManager.Instance.OnBallPurchased += HandleBallPurchased;
         }
 
-        if (CoinManager.Instance != null)
-        {
-            CoinManager.Instance.CoinsChanged -= coinChangedListener;
-            CoinManager.Instance.CoinsChanged += coinChangedListener;
-            RefreshCoinDisplay(CoinManager.Instance.Coins);
-        }
+        // Thử subscribe lại nếu OnEnable chạy trước CoinManager.Awake
+        SubscribeToCoinManager();
 
         // Build lại sau khi chắc chắn BallShopManager đã Awake xong
         BuildItemList();
@@ -108,6 +112,10 @@ public class BallShopUI : MonoBehaviour
 
     private void Update()
     {
+        // Fallback: thử đăng ký CoinManager nếu chưa kịp (do thứ tự Awake)
+        if (!coinManagerSubscribed)
+            SubscribeToCoinManager();
+
         // Tự ẩn popup sau thời gian
         if (popupCannotAfford != null && popupCannotAfford.activeSelf)
         {

@@ -51,7 +51,7 @@ public class CoinManager : MonoBehaviour
 
     public bool SpendCoins(int amount)
     {
-        if (amount <= 0)
+        if (amount < 0)
         {
             return false;
         }

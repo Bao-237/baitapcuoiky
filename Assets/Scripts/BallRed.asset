@@ -17,7 +17,7 @@ MonoBehaviour:
   description: "DDD\u0110"
   previewSprite: {fileID: 542768174, guid: cf6a767df56f33f40ba6419663face09, type: 3}
   ballMaterial: {fileID: 2100000, guid: 3da11af4547e95f4a96ffa3717c3071b, type: 2}
-  price: 1000
+  price: 50
   isDefault: 1
   sizeMultiplier: 1
   bounceMultiplier: 1

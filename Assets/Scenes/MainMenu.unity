@@ -3725,7 +3725,7 @@ MonoBehaviour:
   m_CellSize: {x: 200, y: 200}
   m_Spacing: {x: 0, y: 150}
   m_Constraint: 2
-  m_ConstraintCount: 2
+  m_ConstraintCount: 3
 --- !u!1 &767981691
 GameObject:
   m_ObjectHideFlags: 0
@@ -4030,6 +4030,7 @@ MonoBehaviour:
   allBalls:
   - {fileID: 11400000, guid: 2337c586b588de441813a422950e5fe9, type: 2}
   - {fileID: 11400000, guid: 980fc336ff33e34429a3afb4147416a4, type: 2}
+  - {fileID: 11400000, guid: 2a6ab6ede4e003d4bb909fb2ba41ed18, type: 2}
 --- !u!4 &812030515
 Transform:
   m_ObjectHideFlags: 0
@@ -6044,8 +6045,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: XXXX
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: c436ef89bfb81fd4f93eeac16787c052, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: c436ef89bfb81fd4f93eeac16787c052, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -9025,7 +9026,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1945096124
 RectTransform:
   m_ObjectHideFlags: 0
